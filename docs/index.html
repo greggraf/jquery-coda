@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		
+		<title></title>
+
+		<!-- Meta tags -->
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="/mtvn/dev/assets/css/main.css?version=1" />
+		
+		<!-- JavaScript -->
+		<!--[if IE]><![endif]-->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<script src="/mtvn/dev/assets/js/respond.min.js"></script>
+	</head>
+	<body>
+	
+<h1>CODA jQuery Plugin</h1>
+
+<section>
+<h2>Introduction</h2>
+<p>
+This plugin is written to help with the integration of various reporting functionality tied to CODA. Specifically:
+<ul>
+	<li>Link Events</li>
+	<li>Search related reporting functions</li>
+</ul>
+We can extend this to do photo specific reporting, and other things further down the road.
+</p>
+
+
+<dl>
+	<dt>Resources</dt>
+	<dd><a href="../samples/demo1.html" target="_blank">Demo Page</a></dd>
+	<dd><a href="../test/qunit.html" target="_blank">Qunit Unit Tests</a></dd>
+
+	<dt>Plugin Versions</dt>
+	<dd><a href="http://btg.mtvnservices.com/mtvn/jquery-reporting/0.1/reporting.js">http://btg.mtvnservices.com/mtvn/jquery-reporting/0.1/reporting.js</a></dd>
+</dl>
+
+</section>
+
+<section>
+<h2>Dependencies</h2>
+
+	<dl>
+	  <dt><a href="http://jquery.com/">jQuery</a></dt>
+	  <dd>http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js</dd>
+	  <dd>http://btg.mtvnservices.com/lib/jquery/1.6.1/jquery.min.js</dd>
+
+	</dl>		
+</section>
+
+
+<section>
+
+<h2>Link Events</h2>
+
+<p>Code investigates the link.  It will do a link event call "e" (external) if an attribute rel="external" is present in the anchor tag.  Otherwise it will use an "o" (internal)</p>
+
+
+</section>
+
+
+<h2>Search Related Events</h2>
+
+<p>This code uses data- attributes in the html elements to implement the reporting recommendations from this page:
+< a href="http://confluence.mtvi.com/display/BUSTECH/Enhanced+Site+Search+Reporting+-+Implementation">http://confluence.mtvi.com/display/BUSTECH/Enhanced+Site+Search+Reporting+-+Implementation</a>
+</p>
+
+
+
+<p>There are three types of conversions supported: indicating the user clicked on the synonym link, indicated the user clicked on a search result, and indicating the user clicked on the typeahead result.  In order to identify these events, we need to have hooks to indicate </p>
+
+
+</section>
+
+<h2>Future Improvements</h2>
+	<ul>
+	<li>...</li>
+	</ul>
+</section>	
+
+<section>
+
+<h2>Contact</h2>
+	<p><a href="mailto:greg.graf@mtvn.com?subject=jquery-flux4">Email me</a> with suggestions for improvement or if you have any problems.</p>
+</section>	
+	
+	
+	</body>
+</html>
+
+
+
