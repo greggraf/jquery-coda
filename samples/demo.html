@@ -10,6 +10,7 @@
 	
 		.mtvn-ad {
 			display: none;
+			border: 1px red solid;
 		}
 
 		.mobile {
@@ -18,9 +19,9 @@
 	
 
 
-		@media screen and (min-width: 728px) {
+		@media screen and (min-device-width: 728px) {
 
-			.mtvn-ad {
+			.mtvn-ad, .mtvn-ad iframe {
 				display: block;
 			}
 
@@ -50,7 +51,7 @@
     	<div class="mtvn-ad mobile" data-sz="300x50" style="height:50px; width:300px">
 		</div>	
 			
-    	<div class="mtvn-ad" data-sz="728x90" style="height:190px; width:728px">
+    	<div class="mtvn-ad" data-sz="728x90">
  
 			 <noscript>
 				<a href="http://ad.doubleclick.net/jump/mtv.mtvi/atf_j_s/search/index;sec0=search;sec1=index;pos=atf;tag=adj;mtype=standard;sz=728x90;tile=1;demo=D;dcopt=ist;u=pos-atf|tag-adj|mtype-standard|sz-728x90|tile-1|demo-D|dcopt-ist;ord=800169714360071400?" target="_blank" ><img src="http://ad.doubleclick.net/ad/mtv.mtvi/atf_j_s/search/index;sec0=search;sec1=index;pos=atf;tag=adj;mtype=standard;sz=728x90;tile=1;demo=D;dcopt=ist;u=pos-atf|tag-adj|mtype-standard|sz-728x90|tile-1|demo-D|dcopt-ist;ord=800169714360071400?" border="0" alt="" /></a>
@@ -98,9 +99,8 @@
 	<script src="http://btg.mtvnservices.com/aria/coda.html?site=nick.com"></script>
 	<script>
 
-		mtvn.btg.config.AdSettings.DoubleClick.positionThreshold = "2";
-		mtvn.btg.config.AdSettings.DoubleClick.autoDcopt = true; 
-		mtvn.btg.Controller.init();
+		btg.config.DoubleClick.positionThreshold = "2";
+		btg.config.DoubleClick.autoDcopt = true; 
 
 		$(".mtvn-ad").coda();
 	</script>
