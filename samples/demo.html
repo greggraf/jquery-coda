@@ -15,11 +15,13 @@
 
 		.mobile {
 			display: block;
+			border: 1px blue solid;
+			
 		}
 	
 
 
-		@media screen and (min-device-width: 728px) {
+		@media screen and (min-width: 728px) {
 
 			.mtvn-ad, .mtvn-ad iframe {
 				display: block;
@@ -102,7 +104,12 @@
 		btg.config.DoubleClick.positionThreshold = "2";
 		btg.config.DoubleClick.autoDcopt = true; 
 
-		$(".mtvn-ad").coda();
+		
+		$(window).resize(function() {
+			$(".mtvn-ad:visible").coda();
+		}).resize();
+		
+		
 	</script>
 
 
