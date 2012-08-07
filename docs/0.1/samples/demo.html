@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+	
+  <head>
+    <meta charset="utf-8">
+    <title>Page</title>
+
+	<style>
+			
+	
+		.mtvn-ad {
+			display: none;
+			border: 1px red solid;
+		}
+
+		.mobile {
+			display: block;
+			border: 1px blue solid;
+			
+		}
+	
+
+
+		@media screen and (min-width: 728px) {
+
+			.mtvn-ad, .mtvn-ad iframe {
+				display: block;
+			}
+
+			.mobile {
+				display: none;
+
+			}
+
+		}
+
+
+	</style>
+
+
+  </head>
+	
+  <body>
+
+    	<div class="mtvn-ad" data-sz="6x6" style="">
+ 
+			
+		</div>
+
+	<header>
+		<h1>Site Header</h1>
+		<p> resize window and reload.  Blue outline ads are mobile, red are desktop.
+
+    	<div class="mtvn-ad mobile" data-sz="300x50" style="height:50px; width:300px">
+		</div>	
+			
+    	<div class="mtvn-ad" data-sz="728x90">
+ 
+			 <noscript>
+				<a href="http://ad.doubleclick.net/jump/mtv.mtvi/atf_j_s/search/index;sec0=search;sec1=index;pos=atf;tag=adj;mtype=standard;sz=728x90;tile=1;demo=D;dcopt=ist;u=pos-atf|tag-adj|mtype-standard|sz-728x90|tile-1|demo-D|dcopt-ist;ord=800169714360071400?" target="_blank" ><img src="http://ad.doubleclick.net/ad/mtv.mtvi/atf_j_s/search/index;sec0=search;sec1=index;pos=atf;tag=adj;mtype=standard;sz=728x90;tile=1;demo=D;dcopt=ist;u=pos-atf|tag-adj|mtype-standard|sz-728x90|tile-1|demo-D|dcopt-ist;ord=800169714360071400?" border="0" alt="" /></a>
+			</noscript>
+			
+		</div>
+
+	</header>
+	
+	<nav>
+		<ul>
+			<li><a href="">Home</a></li>
+			<li><a href="">Away</a></li>
+		</ul>
+	</nav>
+
+
+    <div id="leftCol">
+    
+        	<div class="mtvn-ad" data-sz="300x250" style="height:300px; width:300px">
+ 
+			 <noscript>
+				<a href="http://ad.doubleclick.net/jump/mtv.mtvi/atf_j_s/search/index;sec0=search;sec1=index;pos=atf;tag=adj;mtype=standard;sz=300x250;tile=1;demo=D;dcopt=ist;u=pos-atf|tag-adj|mtype-standard|sz-300x250|tile-1|demo-D|dcopt-ist;ord=800169714360071400?" target="_blank" ><img src="http://ad.doubleclick.net/ad/mtv.mtvi/atf_j_s/search/index;sec0=search;sec1=index;pos=atf;tag=adj;mtype=standard;sz=300x250;tile=1;demo=D;dcopt=ist;u=pos-atf|tag-adj|mtype-standard|sz-300x250|tile-1|demo-D|dcopt-ist;ord=800169714360071400?" border="0" alt="" /></a>
+			</noscript>
+			
+		</div>
+    
+    </div>
+    <div id="main">how do you hide an ad that is added to the DOM by a framebuster? this may totally make my attempt to show/hide not feasible.</div>
+    
+        	<div class="mtvn-ad" data-sz="5x5" data-addkv="promobox=globaltxtad;" style="height:300px; width:300px">
+
+	</div>
+
+        	<div class="mtvn-ad" data-sz="1x2" data-addkv="research=survey;" style="display:none;">
+
+	</div>
+
+
+
+
+    <footer>copyright</footer>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script src="/mtvn/jquery-coda/0.1/coda.js"></script>
+	<script src="http://btg.mtvnservices.com/aria/coda.html?site=nick.com"></script>
+	<script>
+
+		btg.config.DoubleClick.positionThreshold = "2";
+		btg.config.DoubleClick.autoDcopt = true; 
+
+		$(".mtvn-ad").coda();
+	</script>
+
+
+  </body>
+</html>
