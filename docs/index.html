@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		
+		<title></title>
+
+		<!-- Meta tags -->
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- CSS -->
+		<link rel="stylesheet" href="/mtvn/dev/assets/css/main.css?version=1" />
+		
+		<!-- JavaScript -->
+		<!--[if IE]><![endif]-->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<script src="/mtvn/dev/assets/js/respond.min.js"></script>
+	</head>
+	<body>
+	
+<h1>CODA jQuery Plugin</h1>
+
+<section>
+	<h2>Introduction</h2>
+	<p>
+		This plugin is written to help with the integration of Ads into the page, and is specifically focussed on providing for loading ads in iframes in an unobtrusive way. This plugin may evolve to support other CODA integration such as: reporting calls, automatic search related reporting, link events, trusted javascript ad calls (without document.write() statements).
+
+	</p>
+
+</section>
+
+<div class="display">
+
+<section>
+	<h2 id="version">0.1</h2>
+	<dl>
+		<dt>Source</dt>
+		<dd><a href="http://btg.mtvnservices.com/mtvn/jquery-coda/0.1/coda.js">http://btg.mtvnservices.com/mtvn/jquery-coda/0.1/coda.js</a></dd>
+		
+		<dt>Resources</dt>
+		<dd>
+		<ul>
+			<li><a href="0.1/samples/demo1.html" target="_blank">Demo Page</a></li>
+			<li>Qunit Unit Tests vs jQuery versions:<br> <a href="0.1/test/qunit.html?version=1.7.1" target="_blank">1.7.1</a>, 
+		<a href="0.1/test/qunit.html?version=1.7.0" target="_blank">1.7.0</a>, 
+		<a href="0.1/test/qunit.html?version=1.6.4" target="_blank">1.6.4</a>, 
+		<a href="0.1/test/qunit.html?version=1.6.3" target="_blank">1.6.3</a>, 
+		<a href="0.1/test/qunit.html?version=1.6.2" target="_blank">1.6.2</a>, 
+		<a href="0.1/test/qunit.html?version=1.6.1" target="_blank">1.6.1</a>, 
+		<a href="0.1/test/qunit.html?version=1.6.0" target="_blank">1.6.0</a>, 
+		<a href="0.1/test/qunit.html?version=1.5.2" target="_blank">1.5.2</a>, 
+		<a href="0.1/test/qunit.html?version=1.5.1" target="_blank">1.5.1</a>, 
+		<a href="0.1/test/qunit.html?version=1.5.0" target="_blank">1.5.0</a>, 
+		<a href="0.1/test/qunit.html?version=1.4.4" target="_blank">1.4.4</a></li>
+			<li>NOT SUPPORTED: <a href="0.1/test/qunit.html?version=1.4.3" target="_blank">1.4.3</a>, 
+		<a href="0.1/test/qunit.html?version=1.4.2" target="_blank">1.4.2</a> and earlier.</li>
+		</ul>
+		
+		
+		</dd>
+
+		
+		<dt>Dependancies</dt>
+		<dd><a href="http://jquery.com/">jQuery</a> [greater than version 1.4.4]
+			<ul>
+				<li>http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js</li>
+				<li>http://btg.mtvnservices.com/lib/jquery/1.7.1/jquery.min.js</li>
+			</ul>
+		</dd>
+		<dd>Coda
+			<ul>
+				<li>Your BTG Aria CODA build</li>
+
+			</ul>
+		</dd>		<dt>Features</dt>
+		<dd>
+			<ul>
+				<li>Supports in page ad reloading using a refresh rate data attribute</li>
+
+			</ul>
+		</dd>
+	
+
+	</dl>
+
+<h2>How It Works</h2>
+
+<p>There are two parts:
+	<ol>
+		<li><i>Placeholders</i>: DOM Elements with <code>data-</code> attributes in the HTML markup</li>
+		<li>Plugin</li>
+	</ol>
+</p>
+
+
+<p>When invoked against a jQuery collection of the <i>Placeholders</i>, the plugin will:
+	<ol>
+		<li>Confirm that CODA is on the page, or exit.</li>
+		<li>Loop through each placeholder element, extract its <code>data-</code> attributes.</li>
+
+		<li>Prepare an iframe ad call url (adi) using the btg.Controller.getAdUrl() method</li>
+		<li>Construct Iframes with the iframe ad url and append them to the placeholders in the document</li>
+	</ol>
+</p>
+
+
+<h3>Placeholders</h3>
+
+	
+	<p>The Plugin is looking for the following <code>data-</code> attributes on the Dom elements.
+		<dl>
+			<dt>data-sz</dt>
+			<dd>a string indicating the size of the ad used in the dart call.  for example "728x90"</dd>
+			<dt>data-addkv</dt>
+			<dd>A string of key/value pairs to be used in the DART call for targetting ads </dd>
+			<dt>data-refreshRate</dt>
+			<dd>A number representing the seconds after which the ad should be refreshed.  The plugin will check for this on each refresh, so you could cancel and initiate reloading programatically by doing something like this:<pre><code>
+$(element).data("refreshrate", false);                
+// to cancel
+
+$(element).data("refreshrate", 60);                
+// to intiate at a sixty second refresh</code>
+		
+		</pre></dd>
+		</dl>
+	</p>
+			
+	<p>For Example:<pre><code>
+&lt;div class="mtvn_ad" data-sz="728x90"&gt;&lt;/div&gt;                
+// Placeholder for the basic 728x90 banner ad call
+
+&lt;div class="mtvn_ad" data-sz="300x250" data-refreshrate="30" &gt;&lt;/div&gt;                 // Placehoder for a 300x250 ad call on a 30 second refresh</code>
+		
+		</pre>
+</p>
+
+
+
+
+		<h3>Plugin and Invocation</h3>
+
+		<p> The plugin can be referenced at the BTG server, at this url:
+		<a href="http://btg.mtvnservices.com/mtvn/jquery-coda/0.1/coda.js">http://btg.mtvnservices.com/mtvn/jquery-coda/0.1/coda.js</a>
+		</p>
+
+		<p>The plugin is invoked by calling coda() on a collection of jQuery elements.  Using the markup defined above, the call would look like this:
+		<pre><code>$(".mtvn_ad").coda();</code></pre>
+		</p>
+
+</section>
+<section>
+
+<h2>Custom Events</h2>
+		<p>The Plugin exposes the following jQuery custom events:
+			<dl>
+				<dt>coda.ad.load</dt>
+				<dd class="signature">(event, object <span class="type"></span>)</dd>
+				<dd>Triggered on each placeholder element, after an ad has been loaded in.  This is not the Iframe load event, and will fier after the iframe has been appended to the DOM, but might happen before the ad itself has loaded.  An object is passed that has an url property which corresponds to the src attribute of the iframe.</dd>
+			</dl>
+		</p>
+
+</section>
+		
+	
+	</section>
+</div>
+
+
+	
+	</body>
+</html>
+
+
+
