@@ -246,6 +246,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 	
 	
 });
+
 test("ord utilities",function(){
 	
 	expect(4);
@@ -284,5 +285,52 @@ test("ord utilities",function(){
 		"return new url with custom increment"
 	);
 	
+	
+});
+
+test("zone override",function(){
+	
+	stop();
+	
+	expect(2);
+
+	var getZone = function(str) {
+		return str.substr(7, str.indexOf(";") - 7).split("/").slice(3).join("/")
+	}
+
+	var el = $("#test_zone");
+	var el2 = $("#test1");
+	var val = "btf_j_s/nickmom/more_lols/_mn";
+	var val2, val1;
+	
+	el2.one("coda.ad.load", function(e, data) {	
+
+		val2 = getZone(data.url);
+		el.coda();
+
+	});
+	
+	el.one("coda.ad.load", function(e, data) {	
+
+		val1 = getZone(data.url);
+
+		start();
+
+		notEqual(
+			val1, 
+			val2,
+			"zone is overriden"
+		);
+
+		equal(
+			val1, 
+			val,
+			"zone is what was in the data- attribute"
+		);
+
+	
+	});
+	
+	el2.coda();
 	
 });

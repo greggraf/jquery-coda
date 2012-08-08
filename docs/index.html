@@ -114,9 +114,14 @@
 	<p>The Plugin is looking for the following <code>data-</code> attributes on the Dom elements.
 		<dl>
 			<dt>data-sz</dt>
-			<dd>a string indicating the size of the ad used in the dart call.  for example "728x90"</dd>
+			<dd>A string indicating the size of the ad used in the dart call.  for example "728x90"</dd>
+			
 			<dt>data-addkv</dt>
 			<dd>A string of key/value pairs to be used in the DART call for targetting ads </dd>
+			
+			<dt>data-zone</dt>
+			<dd>A string that defines the zone to be used in the DART call.</dd>
+			
 			<dt>data-refreshRate</dt>
 			<dd>A number representing the seconds after which the ad should be refreshed.  The plugin will check for this on each refresh, so you could cancel and initiate reloading programatically by doing something like this:<pre><code>
 $(element).data("refreshrate", false);                
