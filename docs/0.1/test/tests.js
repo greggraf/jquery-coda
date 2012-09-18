@@ -334,3 +334,68 @@ test("zone override",function(){
 	el2.coda();
 	
 });
+
+module("data attributes", {
+	"setup": function() {
+		btg.config.DoubleClick.keyValues="pagelevel=here;";
+
+		this.attrs = {
+			"addkv": "key1=val1;key2=val2",
+			"excludekv": "!category=exclude1;!category=exclude2",
+			"replacekv": "kv=replaced"
+		};
+		
+		this.testslug = ["addkv", "excludekv", "replacekv"]
+		
+		
+	}
+});
+
+var testslug = ["addkv", "replacekv", "addkv_replacekv"]
+
+var testfn = function(slug, self) {
+
+		btg.config.DoubleClick.keyValues="pagelevel=here;";
+
+	stop();
+
+	var	slugs = slug.split("_");
+
+
+	expect(slugs.length + 1);
+	
+	var el = $("#test_" + slug);
+	var attrs = self.attrs
+	
+	el.one("coda.ad.load", function(e, data) {	
+		start();		
+		console.log(data.url)
+		for (var i = 0; i < slugs.length; i++) {
+			ok(data.url.indexOf(attrs[slugs[i]]) > 1, "values from the " + slugs[i] + " data attribute(s) are in the dart call");
+		}
+
+		if (slug.indexOf("replacekv") < 0) {
+			ok(data.url.indexOf("pagelevel=here") >= 0, "values from the page level are in the dart call");		
+		} else {
+			ok(data.url.indexOf("pagelevel=here") < 0, "values from the page level are not in the dart call");
+		}
+
+	});
+
+	el.coda();
+}
+
+
+	test(testslug[0] + " attribute", function() {
+		testfn(testslug[0], this)
+	})
+
+	test(testslug[1] + " attribute", function() {
+		testfn(testslug[1], this)
+	})
+
+	test(testslug[2] + " attribute", function() {
+		testfn(testslug[2], this)
+	})
+
+
