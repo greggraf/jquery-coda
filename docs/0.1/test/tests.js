@@ -369,7 +369,7 @@ var testfn = function(slug, self) {
 	
 	el.one("coda.ad.load", function(e, data) {	
 		start();		
-		console.log(data.url)
+
 		for (var i = 0; i < slugs.length; i++) {
 			ok(data.url.indexOf(attrs[slugs[i]]) > 1, "values from the " + slugs[i] + " data attribute(s) are in the dart call");
 		}
