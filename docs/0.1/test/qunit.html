@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QUnit Test Suite</title>
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css" type="text/css" media="screen">
+
+
+
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	
+	<div id="qunit-fixtures">
+	
+	
+	<!-- basic ad placement rates -->
+		<div id="test1" data-sz="300x250"></div>
+		
+	<!-- refresh rates -->
+		<div id="test_refreshrate" class="refresh2" data-sz="300x250" data-refreshrate="2"></div>
+		<div class="refresh2" data-sz="728x90" data-refreshrate="2"></div>
+		<div class="refresh3"  data-sz="300x250" data-refreshrate="3"></div>
+		<div class="refresh3"  data-sz="728x90" data-refreshrate="3"></div>
+		<div id="test_zone" data-sz="300x250" data-zone="btf_j_s/nickmom/more_lols/_mn"></div>
+
+	<!-- basic ad placement rates -->
+		<div 
+			id="test_addkv" 
+			data-sz="300x250" 
+			data-addkv="key1=val1;key2=val2" 
+		></div>
+		
+		<div 
+			id="test_replacekv" 
+			data-sz="300x250" 
+			data-replacekv="kv=replaced"
+		></div>
+
+
+		<div 
+			id="test_addkv_replacekv" 
+			data-sz="300x250" 
+			data-addkv="key1=val1;key2=val2" 
+			data-replacekv="kv=replaced"
+		></div>		
+
+
+	</div>
+	<script src="http://btg.mtvnservices.com/aria/coda.html?site=nick.com"></script>
+	<script>
+		var v = window.location.search.substr(1).split("&")[0].split("version=")[1];
+		var jqueryVersion = v || "1.7.1";		
+		if (jqueryVersion == 'zepto') {
+			document.write('<script src="/lib/zepto/0.8/zepto.js"><' + '/script>')
+		} else {
+			document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/' + jqueryVersion + '/jquery.min.js"><' + '/script>')
+		}
+		
+		
+	</script>
+
+	<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
+	<script type="text/javascript" src="../src/coda.js"></script>
+
+	<script type="text/javascript" src="tests.js"></script>
+
+</body>
+</html>
