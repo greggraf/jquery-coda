@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+	
+  <head>
+    <meta charset="utf-8">
+    <title>Page</title>
+
+	<style>
+			
+	
+		.mtvn-ad {
+			border: 1px red solid;
+		}
+
+		.mobile {
+			display: block;
+			border: 1px blue solid;
+			
+		}
+	
+
+
+		@media screen and (min-width: 728px) {
+
+			.mtvn-ad, .mtvn-ad iframe {
+				display: block;
+			}
+
+			.mobile {
+				display: none;
+
+			}
+
+		}
+
+
+	</style>
+
+
+  </head>
+	
+  <body>
+		<h1>Site Header</h1>
+		<p> resize window and reload.  Blue outline ads are mobile, red are desktop.
+			
+    	<div class="XXXmtvn-ad" 
+    		data-sz="728x90" 	
+    		data-addkv="site=spongebob;pos=atf;!category=expand;dcopt=ist;">
+ 
+			
+		</div>
+		<p>direct to eyeblaster</p>
+		<div class="mtvn-ad" style="width:728px;">
+		<iframe scrolling="no" frameborder="0" allowtransparency="true" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" width="728" height="90" src="dartframe.html"></iframe>
+		</div>
+
+
+    <div id="main">how do you hide an ad that is added to the DOM by a framebuster? this may totally make my attempt to show/hide not feasible.</div>
+    
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script src="../src/coda.js"></script>
+	<script src="http://btg.mtvnservices.com/aria/coda.html?site=spongebob.com"></script>
+	<script>
+
+		btg.config.DoubleClick.positionThreshold = "2";
+		btg.config.DoubleClick.autoDcopt = true; 
+		btg.config.DoubleClick.zoneOverride="/";
+
+		$(".mtvn-ad").coda();
+	</script>
+
+<div>
+
+</div>
+  </body>
+</html>

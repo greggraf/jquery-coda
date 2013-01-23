@@ -169,9 +169,20 @@ $(element).data("refreshrate", 60);
 			<dl>
 				<dt>coda.ad.load</dt>
 				<dd class="signature">(event, object <span class="type"></span>)</dd>
-				<dd>Triggered on each placeholder element, after an ad has been loaded in.  This is not the Iframe load event, and will fier after the iframe has been appended to the DOM, but might happen before the ad itself has loaded.  An object is passed that has an url property which corresponds to the src attribute of the iframe.</dd>
+				<dd>Triggered on each placeholder element, after an ad has been loaded in.  This is not the Iframe load event, and will fire after the iframe has been appended to the DOM, but might happen before the ad itself has loaded.  An object is passed that has an url property which corresponds to the src attribute of the iframe.  If the div is not shown, An object with a property 'message' set to 'hidden' is returned.  If the div already has an iframe, a 'message' set to "occupied"</dd>
 			</dl>
 		</p>
+
+</section>
+		
+	
+	</section>
+</div>
+
+<h2>Changes in version 0.2</h2>
+	<ul>
+		<li>If placeholder element Is not rendered in the document (for example inside an element that is display:none), no ad is loaded. </li>
+	</ul>
 
 </section>
 		

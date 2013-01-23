@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+	
+  <head>
+    <meta charset="utf-8">
+    <title>Zone Override Test</title>
+  </head>
+	
+  <body>
+
+	<script src="http://btg.mtvnservices.com/aria/coda.html?site=nick.com"></script>
+	<script>
+
+		btg.config.DoubleClick.positionThreshold = "2";
+		btg.config.DoubleClick.autoDcopt = true; 
+		btg.config.DoubleClick.keyValues="pagelevel=here;";
+
+
+	</script>
+
+<div>
+	<script>btg.Controller.placeAd({
+		"contentType":"adi",
+		"size":"300x250",
+		"keyValues":"foo=bar",
+		"zoneOverride":"btf_j_s/nickmom/more_lols/_mn"
+		}
+	);
+	</script>
+</div>
+  </body>
+</html>

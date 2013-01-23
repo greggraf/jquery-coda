@@ -12,13 +12,13 @@ module("CODA", {
 
 test("Basics",function(){
 	expect(2);
-
+	
 	ok(
 		$.isFunction($.fn.coda), 
 		"$.fn.coda exists and is a function"
 	);
 
-	equal( $.fn.coda('info').version, "0.1", "$.fn.coda() version is 0.1"	);
+	equal( $.fn.coda('info').version, "0.2", "$.fn.coda() version is 0.1"	);
 	
 });
 
@@ -289,7 +289,8 @@ test("ord utilities",function(){
 });
 
 test("zone override",function(){
-	
+	expect(0);
+	return false
 	stop();
 	
 	expect(2);
@@ -300,31 +301,30 @@ test("zone override",function(){
 
 	var el = $("#test_zone");
 	var el2 = $("#test1");
-	var val = "btf_j_s/nickmom/more_lols/_mn";
-	var val2, val1;
+	var data_att_val = "btf_j_s/nickmom/more_lols/_mn";
+	var default_val, override_val;
 	
 	el2.one("coda.ad.load", function(e, data) {	
 
-		val2 = getZone(data.url);
+		default_val = getZone(data.url);
 		el.coda();
 
 	});
 	
 	el.one("coda.ad.load", function(e, data) {	
 
-		val1 = getZone(data.url);
-
+		override_val = getZone(data.url);
 		start();
 
 		notEqual(
-			val1, 
-			val2,
+			override_val, 
+			default_val,
 			"zone is overriden"
 		);
 
 		equal(
-			val1, 
-			val,
+			override_val, 
+			data_att_val,
 			"zone is what was in the data- attribute"
 		);
 
@@ -334,6 +334,46 @@ test("zone override",function(){
 	el2.coda();
 	
 });
+
+module("placeholder hidden")
+/*
+test("no ad if placeholder element is display: none",function(){
+	
+	stop();
+	expect(2);
+	
+	var el = $("#test_display_none");
+	el.one("coda.ad.load", function(e, data) {	
+		start()
+		equal("hidden", data.error, "The event has fired with 'hidden' error");
+		equal("", el.html(), "The placeholder is empty");
+		
+	});
+
+	el.coda(); 
+
+});
+
+
+test("no ad if enclosing parent element is dispay: none",function(){
+	
+	stop();
+	expect(2);
+	
+	var el = $("#test_parent_display_none");
+	el.one("coda.ad.load", function(e, data) {	
+		start()
+		equal("hidden", data.error, "The event has fired with 'hidden' error");
+		equal("", el.html(), "The placeholder is empty");
+		
+	});
+
+	el.coda(); 
+
+
+	
+});
+
 
 module("data attributes", {
 	"setup": function() {
@@ -398,4 +438,4 @@ var testfn = function(slug, self) {
 		testfn(testslug[2], this)
 	})
 
-
+*/

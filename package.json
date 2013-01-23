@@ -1,0 +1,7 @@
+{
+  "name" : "jQuery CODA plugin",
+  "version" : "0.2.0",
+  "devDependencies" : {
+    "grunt" : "latest"
+  }
+}

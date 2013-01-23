@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+	
+  <head>
+    <meta charset="utf-8">
+    <title>Page</title>
+
+	<style>
+			
+	
+		.mtvn-ad {
+			border: 1px red solid;
+		}
+
+		.mobile {
+			display: block;
+			border: 1px blue solid;
+			
+		}
+	
+
+
+		@media screen and (min-width: 728px) {
+
+			.mtvn-ad, .mtvn-ad iframe {
+				display: block;
+			}
+
+			.mobile {
+				display: none;
+
+			}
+
+		}
+
+	.middle {
+		background: none repeat scroll 0 0 #d0d0d0;
+		padding: 4px;
+	}
+
+	.global_header_promo {
+		margin: 0 0 10px 0;
+		background-color: transparent;
+		width: 265px;
+		clear: none!important;
+		float: left;
+		display: none;
+	}
+
+	.global_header_promo img {
+		float: left;
+		margin-right: 10px;
+	}
+
+	.global_header_promo p {
+		margin:0;
+		padding:0;
+		font-size: 11px;
+		font-family: Arial;
+	}
+	
+	.thumbnail_wrap{
+		background-color: white;
+		height: 74px;
+		padding: 4px;
+		width: 248px;
+	}	
+
+	
+	
+	</style>
+
+
+  </head>
+	
+  <body>
+		<h1>Site Header</h1>
+		<p> Home Page. 960 call that gets reduced to a 1x1 when not booked</p>
+			
+    	<div class="mtvn-ad" 
+    		data-sz="970x66">
+		</div>
+
+
+		<p>Video Page.  Sometimes will recieve a 970x66, in which case the promo should go away</p>
+
+<div style="width:1000px">		
+    	<div class="mtvn-ad opa" 
+    		data-sz="728x90"
+    		style="float:right"	
+    	>	
+		</div>
+
+	<div id="mod_bxuq4p" class="module global_header_promo">
+		<div class="middle">
+			<div class="thumbnail_wrap">
+				<div class="img_wrap">
+					<a href="/shows/ultimate-game-preview">
+						<img class="promo_img" src="http://3.images.gametrailers.com/image_root/vid_thumbs/2013/01_jan_2013/gt_PromoImage_1280x720_UGP2013.jpg?width=128&amp;height=72&amp;crop=true&amp;quality=.91" alt="UGP 13 Show Promo">
+					</a>
+			</div>
+			<a href="/shows/ultimate-game-preview">2013 Ultimate Game Preview</a>
+			<p>Check out our genre-by-genre rundown!</p>
+		</div>
+	</div>
+	
+	
+
+
+	</div>
+</div>
+
+<a href="" id="cmd_refresh">refresh</a>
+
+    
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script src="../src/coda.js"></script>
+	<script src="http://btg.mtvnservices.com/aria/coda.html?site=gametrailers.com"></script>
+	<script>
+	
+	if (location.hash.indexOf("opa") > 0) {
+
+			$(".opa")
+				.data("testUrl", "http://localhost/btg/mtvn/dev/jquery-coda/examples/dartframe.html");
+		
+		$("#cmd_refresh").click(function(e) {
+
+			e.preventDefault();
+
+				$(".opa").empty().coda()
+
+		})
+	}
+
+			$(".opa").bind("coda.ad.load", function(e, r) {
+			
+				var display ="none";
+
+				if($("iframe", this).height() != 0) {
+					display ="block";
+				}
+				
+				$(this).next(".global_header_promo").css("display", display);
+
+			})			
+
+
+		btg.config.DoubleClick.positionThreshold = "2";
+		btg.config.DoubleClick.autoDcopt = true; 
+
+		$(".mtvn-ad").coda();
+	</script>
+
+<div>
+
+</div>
+  </body>
+</html>
