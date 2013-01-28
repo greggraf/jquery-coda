@@ -117,6 +117,7 @@
 		
 		adObj = {
 			"contentType":"adi",
+			"dw": "0", // disable the doc.write in DART mobile
 			"size": el.data("sz"),
 			"keyValues": ""
 		};
@@ -146,6 +147,13 @@
 		if (el.data("testUrl")) {
 			url = el.data("testUrl");
 		}
+
+		/*
+		    assuming we are in dart mobile, 
+		        - add tp=1 to break the click out of the iframe
+		        - add sdh=1 to inculde a full document
+		*/
+		url = url.replace("&dw=0&", "&dw=0&tp=1&sdh=1&"); 
 
 		buildIframe();
 		activateRefresh();	
