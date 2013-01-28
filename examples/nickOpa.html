@@ -59,7 +59,7 @@
     
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 	<script src="../src/coda.js"></script>
-	<script src="http://btg.mtvnservices.com/aria/coda.html?site=spongebob.com"></script>
+	<script src="http://btg.mtvnservices.com/aria/coda.html?site=nickmom.com"></script>
 	<script>
 
 		btg.config.DoubleClick.positionThreshold = "2";
@@ -67,6 +67,15 @@
 		btg.config.DoubleClick.zoneOverride="/";
 
 		$(".mtvn-ad").coda();
+		
+		btg.Controller.placeAd({
+			"realSize":"","size":"728x90",
+				"contentType":"adi",
+				"zoneOverride":"atf_j_s/nickmom/more_lols/_mn",
+				"sections":"/nickmom/more_lols/_mn",
+				"keyValues":"cat=1;!category=expand;dcopt=ist;pos=atf;genre=More LOLs;"
+			})
+		
 	</script>
 
 <div>
