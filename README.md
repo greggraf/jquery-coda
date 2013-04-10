@@ -34,12 +34,14 @@ When invoked against a jQuery collection of the Placeholders, the plugin will:
 ###Placeholders###
 
 The plugin supports the following data attributes to mirror the data attributes that CODA will be looking for after the switch to Dart For Publishers.  The plugin will map them to the corresponding ad object properties.  In this the placeholders divs should not have to change when the switch to Dart For Publishers happens.
+
 * `data-ad-sizes` - A string indicating the size of the ad used in the dart call. for example "728x90".  Maps to `data-sz` --> `adObj.size`.
 * `data-ad-unit` - A string indicating the zone. Maps to `data-zone` --> `adObj.zoneOverride`.
 * `data-ad-keyvalues` - A string indicating the keyvalues. Maps to `adObj.keyValues`.
 
 
 Previous data attributes that are still supported are:
+
 * `data-sz` - A string indicating the size of the ad used in the dart call. for example "728x90"
 * `data-addkv` - A semicolon delimited string of key/value pairs to be added to any existing page level key/values that may have been set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.
 * `data-replacekv` - A semicolon delimited string of key/value pairs that replace any existing key/values that are already set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.

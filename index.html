@@ -24,18 +24,14 @@
 
 <h3>Placeholders</h3>
 
-<p>The plugin supports the following data attributes to mirror the data attributes that CODA will be looking for after the switch to Dart For Publishers.  The plugin will map them to the corresponding ad object properties.  In this the placeholders divs should not have to change when the switch to Dart For Publishers happens.
-<em> <code>data-ad-sizes</code> - A string indicating the size of the ad used in the dart call. for example &quot;728x90&quot;.  Maps to <code>data-sz</code> --&gt; <code>adObj.size</code>.
-</em> <code>data-ad-unit</code> - A string indicating the zone. Maps to <code>data-zone</code> --&gt; <code>adObj.zoneOverride</code>.
-* <code>data-ad-keyvalues</code> - A string indicating the keyvalues. Maps to <code>adObj.keyValues</code>.</p>
+<p>The plugin supports the following data attributes to mirror the data attributes that CODA will be looking for after the switch to Dart For Publishers.  The plugin will map them to the corresponding ad object properties.  In this the placeholders divs should not have to change when the switch to Dart For Publishers happens.</p>
 
-<p>Previous data attributes that are still supported are:
-<em> <code>data-sz</code> - A string indicating the size of the ad used in the dart call. for example &quot;728x90&quot;
-</em> <code>data-addkv</code> - A semicolon delimited string of key/value pairs to be added to any existing page level key/values that may have been set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.
-<em> <code>data-replacekv</code> - A semicolon delimited string of key/value pairs that replace any existing key/values that are already set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.
-Using data-addkv and data-replacekv in the same element will first apply the data-replacekv, then add the data-addkv
-</em> <code>data-zone</code> - A string that defines the zone to be used in the DART call.
-* <code>data-refreshRate</code> - A number representing the seconds after which the ad should be refreshed. </p>
+<ul><li><code>data-ad-sizes</code> - A string indicating the size of the ad used in the dart call. for example &quot;728x90&quot;.  Maps to <code>data-sz</code> --&gt; <code>adObj.size</code>.</li><li><code>data-ad-unit</code> - A string indicating the zone. Maps to <code>data-zone</code> --&gt; <code>adObj.zoneOverride</code>.</li><li><code>data-ad-keyvalues</code> - A string indicating the keyvalues. Maps to <code>adObj.keyValues</code>.</li></ul>
+
+<p>Previous data attributes that are still supported are:</p>
+
+<ul><li><code>data-sz</code> - A string indicating the size of the ad used in the dart call. for example &quot;728x90&quot;</li><li><code>data-addkv</code> - A semicolon delimited string of key/value pairs to be added to any existing page level key/values that may have been set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.</li><li><code>data-replacekv</code> - A semicolon delimited string of key/value pairs that replace any existing key/values that are already set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.
+Using data-addkv and data-replacekv in the same element will first apply the data-replacekv, then add the data-addkv</li><li><code>data-zone</code> - A string that defines the zone to be used in the DART call.</li><li><code>data-refreshRate</code> - A number representing the seconds after which the ad should be refreshed. </li></ul>
 
 <p>The plugin will check for this on each refresh, so you could cancel and initiate reloading programatically by doing something like this:</p>
 
