@@ -289,19 +289,18 @@ test("ord utilities",function(){
 });
 
 test("zone override",function(){
-	expect(0);
-	return false
+
 	stop();
 	
 	expect(2);
 
 	var getZone = function(str) {
-		return str.substr(7, str.indexOf(";") - 7).split("/").slice(3).join("/")
+		return str.substr(7, str.indexOf(";") - 7).split("/").slice(4).join("/")
 	}
 
 	var el = $("#test_zone");
 	var el2 = $("#test1");
-	var data_att_val = "btf_j_s/nickmom/more_lols/_mn";
+	var data_att_val = "nickmom/more_lols/_mn";
 	var default_val, override_val;
 	
 	el2.one("coda.ad.load", function(e, data) {	
@@ -336,7 +335,7 @@ test("zone override",function(){
 });
 
 module("placeholder hidden")
-/*
+
 test("no ad if placeholder element is display: none",function(){
 	
 	stop();
@@ -353,6 +352,7 @@ test("no ad if placeholder element is display: none",function(){
 	el.coda(); 
 
 });
+
 
 
 test("no ad if enclosing parent element is dispay: none",function(){
@@ -373,6 +373,7 @@ test("no ad if enclosing parent element is dispay: none",function(){
 
 	
 });
+
 
 
 module("data attributes", {
@@ -402,7 +403,7 @@ var testfn = function(slug, self) {
 	var	slugs = slug.split("_");
 
 
-	expect(slugs.length + 1);
+	expect(slugs.length /* + 1 */);
 	
 	var el = $("#test_" + slug);
 	var attrs = self.attrs
@@ -414,11 +415,13 @@ var testfn = function(slug, self) {
 			ok(data.url.indexOf(attrs[slugs[i]]) > 1, "values from the " + slugs[i] + " data attribute(s) are in the dart call");
 		}
 
+/*
 		if (slug.indexOf("replacekv") < 0) {
 			ok(data.url.indexOf("pagelevel=here") >= 0, "values from the page level are in the dart call");		
 		} else {
 			ok(data.url.indexOf("pagelevel=here") < 0, "values from the page level are not in the dart call");
 		}
+*/
 
 	});
 
@@ -438,4 +441,47 @@ var testfn = function(slug, self) {
 		testfn(testslug[2], this)
 	})
 
-*/
+module("DFP data attributes", {
+	"setup": function() {
+		btg.config.DoubleClick.keyValues="pagelevel=here;";
+
+		this.attrs = {
+			"addkv": "key1=val1;key2=val2",
+			"excludekv": "!category=exclude1;!category=exclude2",
+			"replacekv": "kv=replaced"
+		};
+		
+		this.testslug = ["addkv", "excludekv", "replacekv"]
+		
+		
+	}
+});
+
+test("DFP data attributes make it into the ad call",function(){
+
+	expect(3);
+	stop();
+
+	var adSizes="300x250";
+	var adUnit="/nickmom/more_lols/_mn";
+	var adKeyvalues="key1=val1;key2=val2";
+
+
+	var el = $("#test_dfp");
+
+	
+	el.one("coda.ad.load", function(e, data) {	
+		start();		
+
+		ok(data.url.indexOf(adSizes) > 1, "values from the data-ad-sizes data attribute is in the dart call");
+		ok(data.url.indexOf(adUnit) > 1, "values from the data-ad-unit data attribute is in the dart call");
+		ok(data.url.indexOf(adKeyvalues) > 1, "values from the data-ad-keyvalues data attribute is in the dart call");
+
+	});
+
+	
+	el.coda();
+	
+	
+});
+

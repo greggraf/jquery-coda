@@ -8,14 +8,12 @@
 		return false;
 	}
 	
-	var log = function () {
-		logMessage = "CODA Plugin: " + arguments[0];
-			
-		if (typeof console === 'undefined') {
-			return false;
+	var log = function (str) {
+		logMessage =  "CODA Plugin: " + str;
+
+		if ( typeof console !== 'undefined' ) {
+			console.log( str );
 		}
-		
-		console.log.apply(console, [logMessage]);
 	};
 
 	// check to see if jQuery greater than 1.4.3, return and log error if not
@@ -118,14 +116,16 @@
 		adObj = {
 			"contentType":"adi",
 			"dw": "0", // disable the doc.write in DART mobile
-			"size": el.data("sz"),
+			"size": el.data("sz") || el.data("adSizes") ,
 			"keyValues": ""
 		};
+
 		
 		// First: if we are replacing page level, set keyValues to replacekv
-		if (el.data("replacekv")) {
+		if (el.data("replacekv") || el.data("adKeyvalues")) {
 			// maybe make sure it starts with a !
-			adObj.keyValues = ";" + el.data("replacekv");
+			adObj.keyValues = ";";
+			adObj.keyValues  += el.data("replacekv") || el.data("adKeyvalues");
 		} else {
 			if(btg && btg.config && btg.config.DoubleClick && btg.config.DoubleClick.keyValues) {
 				adObj.keyValues = btg.config.DoubleClick.keyValues;
@@ -136,8 +136,8 @@
 			adObj.keyValues += ";" + el.data("addkv");
 		}
 
-		if (el.data("zone")) {
-			adObj.zoneOverride = el.data("zone");
+		if (el.data("zone") || el.data("adUnit")) {
+			adObj.zoneOverride = el.data("zone")  || el.data("adUnit") ;
 		}
 
 	
@@ -149,9 +149,9 @@
 		}
 
 		/*
-		    assuming we are in dart mobile, 
-		        - add tp=1 to break the click out of the iframe
-		        - add sdh=1 to inculde a full document
+			assuming we are in dart mobile, 
+				- add tp=1 to break the click out of the iframe
+				- add sdh=1 to inculde a full document
 		*/
 		url = url.replace("&dw=0&", "&dw=0&tp=1&sdh=1&"); 
 
