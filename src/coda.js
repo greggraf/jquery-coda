@@ -34,22 +34,43 @@
 			"new_url": new_url
 		};
 	};
+	
+	var extractData = function(el, vals) {
+		
+		if (typeof el === "undefined") {
+			return false;
+		}
+		
+		var $el = (el.jquery)?  el : $(el);
+	
+		if (typeof vals === "string") {
+			vals = [vals];
+		}
+		
+		if (Object.prototype.toString.call(vals) === '[object Array]') {
+			for (var i = 0; i < vals.length; i++) {
+				if ($el.data(vals[i])) {
+					return $el.data(vals[i]);
+				}
+			}		 
+		}
+	
+		return false;
+	};
 
 	var loadElement = function(element) {
 		var self = this;
 
-		var el, sz, url, adObj;
+		var el, sz, url, adObj, data_replace, data_zone, data_testUrl;
 
 		var activateRefresh = function() {
 
-			var rate;
+			var rate = extractData(element, "refreshrate");
 			
-			if(!el.data("refreshrate")) {
+			if(!rate) {
 				return false;
 
-			} else {
-			
-				rate = el.data("refreshrate");
+			} else {			
 			
 				setTimeout(function() {
 
@@ -116,36 +137,36 @@
 		adObj = {
 			"contentType":"adi",
 			"dw": "0", // disable the doc.write in DART mobile
-			"size": el.data("sz") || el.data("adSizes") ,
+			"size": extractData(el, ["sz", "adSizes"]),
 			"keyValues": ""
 		};
 
 		
 		// First: if we are replacing page level, set keyValues to replacekv
-		if (el.data("replacekv") || el.data("adKeyvalues")) {
+				
+		if (data_replace= extractData(el, ["replacekv", "adKeyvalues"])) {
 			// maybe make sure it starts with a !
-			adObj.keyValues = ";";
-			adObj.keyValues  += el.data("replacekv") || el.data("adKeyvalues");
+			adObj.keyValues = ";" + data_replace;
 		} else {
 			if(btg && btg.config && btg.config.DoubleClick && btg.config.DoubleClick.keyValues) {
 				adObj.keyValues = btg.config.DoubleClick.keyValues;
 			}
 		}
 		
-		if (el.data("addkv")) {
-			adObj.keyValues += ";" + el.data("addkv");
+		if (data_addkv = extractData(el, "addkv")) {
+			adObj.keyValues += ";" + data_addkv;
 		}
-
-		if (el.data("zone") || el.data("adUnit")) {
-			adObj.zoneOverride = el.data("zone")  || el.data("adUnit") ;
+	
+		if (data_zone = extractData(el, ["zone", "adUnit"])) {
+			adObj.zoneOverride = data_zone;
 		}
 
 	
 		sz = adObj.size.split("x");
 		url = btg.Controller.getAdUrl(adObj);
 
-		if (el.data("testUrl")) {
-			url = el.data("testUrl");
+		if (data_testUrl = extractData(el, "testUrl")) {
+			url = data_testUrl;
 		}
 
 		/*
