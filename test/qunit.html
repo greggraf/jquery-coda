@@ -77,8 +77,15 @@
 	</script>
 
 	<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
-	<script type="text/javascript" src="../src/coda.js"></script>
 
+	<script>
+		var v = window.location.search.substr(1).split("&")[0].split("testing=")[1];
+		if (v == 'min') {
+			document.write('<script src="../dist/coda.min.js"><' + '/script>')
+		} else {
+			document.write('<script src="../src/coda.js"><' + '/script>')
+		}
+	</script>
 	<script type="text/javascript" src="tests.js"></script>
 
 </body>

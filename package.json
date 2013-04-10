@@ -1,6 +1,9 @@
 {
-  "name" : "jquery-coda",
-  "version" : "0.2.0",
+  "name": "jquery-coda",
+  "version": "0.2.0",
+  "config": {
+  	"alias": "coda"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.1.1",
@@ -9,6 +12,7 @@
     "grunt-contrib-uglify": "~0.1.1",
     "grunt-contrib-qunit": "~0.2.1",
     "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-connect": "~0.2.0",
     "grunt-contrib-copy": "~0.4.0",
     "grunt-cli": "~0.1.6",
     "markdown": "~0.4.0"

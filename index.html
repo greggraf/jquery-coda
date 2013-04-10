@@ -1,0 +1,75 @@
+<html><head><title></title><style>b > i:after { content:\a } body { 		font-family: Arial, sans-serif;		line-height: 1.2em;} code { margin: 0 2px;		padding: 0px 5px;		border: 1px solid #dddddd;		background-color: #f5f5f5;		-webkit-border-radius: 3px;		-moz-border-radius: 3px;		font-family: monospace;		border-radius: 3px;} pre code {		display: block;		line-height: 1.2em;		overflow: auto;		padding: 6px 10px;		-webkit-border-radius: 3px;		-moz-border-radius: 3px;		border-radius: 3px;		}</style></head><h1>CODA jQuery Plugin</h1>
+
+<h2>Introduction</h2>
+
+<p>This plugin is written to help with the integration of Ads into the page, and is specifically focussed on providing for loading ads in iframes in an unobtrusive way. This plugin may evolve to support other CODA integration such as: reporting calls, automatic search related reporting, link events, trusted javascript ad calls (without document.write() statements).</p>
+
+<h2>Version 0.2.0</h2>
+
+<ul><li>Source: <a href="http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.js">http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.js</a></li><li>Minfied: <a href="http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.min.js">http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.min.js</a></li><li>Dependancies: jQuery (1.4.4 or later), CODA</li></ul>
+
+<h2>Changes</h2>
+
+<ul><li>support for data attributes that will be used in the Dart For Publishers integration.</li></ul>
+
+<h2>How It Works</h2>
+
+<p>There are two parts:</p>
+
+<ol><li><strong>Placeholders</strong>: Dom elements with <code>data-</code> attributes in the HTML markup</li><li>Plugin Invocation</li></ol>
+
+<p>When invoked against a jQuery collection of the Placeholders, the plugin will:</p>
+
+<ol><li>Confirm that CODA is on the page, or exit.</li><li>Loop through each placeholder element, extract its data- attributes.</li><li>Prepare an iframe ad call url (adi) using the btg.Controller.getAdUrl() method</li><li>Construct Iframes with the iframe ad url and append them to the placeholders in the document</li></ol>
+
+<h3>Placeholders</h3>
+
+<p>The plugin supports the following data attributes to mirror the data attributes that CODA will be looking for after the switch to Dart For Publishers.  The plugin will map them to the corresponding ad object properties.  In this the placeholders divs should not have to change when the switch to Dart For Publishers happens.
+<em> <code>data-ad-sizes</code> - A string indicating the size of the ad used in the dart call. for example &quot;728x90&quot;.  Maps to <code>data-sz</code> --&gt; <code>adObj.size</code>.
+</em> <code>data-ad-unit</code> - A string indicating the zone. Maps to <code>data-zone</code> --&gt; <code>adObj.zoneOverride</code>.
+* <code>data-ad-keyvalues</code> - A string indicating the keyvalues. Maps to <code>adObj.keyValues</code>.</p>
+
+<p>Previous data attributes that are still supported are:
+<em> <code>data-sz</code> - A string indicating the size of the ad used in the dart call. for example &quot;728x90&quot;
+</em> <code>data-addkv</code> - A semicolon delimited string of key/value pairs to be added to any existing page level key/values that may have been set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.
+<em> <code>data-replacekv</code> - A semicolon delimited string of key/value pairs that replace any existing key/values that are already set in btg.config.DoubleClick.keyValues, to be used in the DART call for targetting ads.
+Using data-addkv and data-replacekv in the same element will first apply the data-replacekv, then add the data-addkv
+</em> <code>data-zone</code> - A string that defines the zone to be used in the DART call.
+* <code>data-refreshRate</code> - A number representing the seconds after which the ad should be refreshed. </p>
+
+<p>The plugin will check for this on each refresh, so you could cancel and initiate reloading programatically by doing something like this:</p>
+
+<pre><code>$(element).data(&quot;refreshrate&quot;, false); // to cancel
+
+$(element).data(&quot;refreshrate&quot;, 60);    // to intiate at a sixty second refresh</code></pre>
+
+<p>For Example:</p>
+
+<pre><code>// Placeholder for the basic 728x90 banner ad call
+&lt;div class=&quot;mtvn_ad&quot; data-sz=&quot;728x90&quot;&gt;&lt;/div&gt;                
+
+// Placeholder for a 300x250 ad call on a 30 second refresh
+&lt;div class=&quot;mtvn_ad&quot; data-sz=&quot;300x250&quot; data-refreshrate=&quot;30&quot; &gt;&lt;/div&gt;</code></pre>
+
+<h3>Plugin and Invocation</h3>
+
+<p>The plugin can be referenced at the BTG server, at this url: <a href="http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.js">http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.js</a> or <a href="http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.min.js">http://btg.mtvnservices.com/mtvn/jquery-coda/0.2.0/coda.min.js</a></p>
+
+<p>The plugin is invoked by calling sm4() on a collection of jQuery elements. Using the markup defined above, the call would look like this:</p>
+
+<pre><code>$(&quot;.mtvn_ads&quot;).coda();</code></pre>
+
+<h3>Custom Events</h3>
+
+<p>The Plugin exposes the following jQuery custom events:</p>
+
+<p><strong>coda:ad:load</strong> <em>(event, object)</em>
+Triggered on each placeholder element, after an ad has been loaded in. This is not the Iframe load event, and will fier after the iframe has been appended to the DOM, but might happen before the ad itself has loaded. An object is passed that has an url property which corresponds to the src attribute of the iframe.</p><h1>Revisions</h1>
+
+<h2>Version 0.2.0</h2>
+
+<ul><li>Added support for data attributes that will be used in DART For Publishers Pro div placeholders</li></ul>
+
+<h2>Version 0.1.1</h2>
+
+<ul><li>Initial Release</li></ul></body></html>

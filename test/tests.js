@@ -18,7 +18,7 @@ test("Basics",function(){
 		"$.fn.coda exists and is a function"
 	);
 
-	equal( $.fn.coda('info').version, "0.2", "$.fn.coda() version is 0.1"	);
+	equal( $.fn.coda('info').version, "0.2.0", "$.fn.coda() version is 0.2.0"	);
 	
 });
 
@@ -57,16 +57,16 @@ test("refresh rate",function(){
 	var val1, val2, val3;
 	
 	
-	el.one("coda.ad.load", function(e, data) {	
+	el.one("coda:ad:load", function(e, data) {	
 
 		val1 = data.url;
 		
-		el.one("coda.ad.load", function(e, data) {
+		el.one("coda:ad:load", function(e, data) {
 
 
 			val2 = data.url;
 			
-			el.one("coda.ad.load", function(e, data) {
+			el.one("coda:ad:load", function(e, data) {
 
 				el.data("refreshrate", false)
 	
@@ -111,11 +111,11 @@ test("refresh 2 ads at the same interval",function(){
 	var ordUtil = $("body").coda("info").ordUtil;
 
 	
-	els.one("coda.ad.load", function(e, data) {	
+	els.one("coda:ad:load", function(e, data) {	
 
 		vals.push(ordUtil(data.url).ord);
 		
-		$(e.target).one("coda.ad.load", function(e, data) {
+		$(e.target).one("coda:ad:load", function(e, data) {
 
 			$(e.target).data("refreshrate", false)
 
@@ -166,7 +166,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 	var ordUtil = $("body").coda("info").ordUtil;
 
 	
-	els.one("coda.ad.load", function(e, data) {	
+	els.one("coda:ad:load", function(e, data) {	
 		var $el = $(e.target);
 		var set = ""
 		
@@ -180,7 +180,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 		
 		vals[set].push(ordUtil(data.url).ord);
 		
-		$el.one("coda.ad.load", function(e, data) {
+		$el.one("coda:ad:load", function(e, data) {
 
 			$el.data("refreshrate", false)
 
@@ -303,14 +303,14 @@ test("zone override",function(){
 	var data_att_val = "nickmom/more_lols/_mn";
 	var default_val, override_val;
 	
-	el2.one("coda.ad.load", function(e, data) {	
+	el2.one("coda:ad:load", function(e, data) {	
 
 		default_val = getZone(data.url);
 		el.coda();
 
 	});
 	
-	el.one("coda.ad.load", function(e, data) {	
+	el.one("coda:ad:load", function(e, data) {	
 
 		override_val = getZone(data.url);
 		start();
@@ -342,7 +342,7 @@ test("no ad if placeholder element is display: none",function(){
 	expect(2);
 	
 	var el = $("#test_display_none");
-	el.one("coda.ad.load", function(e, data) {	
+	el.one("coda:ad:load", function(e, data) {	
 		start()
 		equal("hidden", data.error, "The event has fired with 'hidden' error");
 		equal("", el.html(), "The placeholder is empty");
@@ -361,7 +361,7 @@ test("no ad if enclosing parent element is dispay: none",function(){
 	expect(2);
 	
 	var el = $("#test_parent_display_none");
-	el.one("coda.ad.load", function(e, data) {	
+	el.one("coda:ad:load", function(e, data) {	
 		start()
 		equal("hidden", data.error, "The event has fired with 'hidden' error");
 		equal("", el.html(), "The placeholder is empty");
@@ -408,7 +408,7 @@ var testfn = function(slug, self) {
 	var el = $("#test_" + slug);
 	var attrs = self.attrs
 	
-	el.one("coda.ad.load", function(e, data) {	
+	el.one("coda:ad:load", function(e, data) {	
 		start();		
 
 		for (var i = 0; i < slugs.length; i++) {
@@ -470,7 +470,7 @@ test("DFP data attributes make it into the ad call",function(){
 	var el = $("#test_dfp");
 
 	
-	el.one("coda.ad.load", function(e, data) {	
+	el.one("coda:ad:load", function(e, data) {	
 		start();		
 
 		ok(data.url.indexOf(adSizes) > 1, "values from the data-ad-sizes data attribute is in the dart call");

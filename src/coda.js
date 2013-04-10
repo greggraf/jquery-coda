@@ -1,6 +1,6 @@
 ;(function($, w) {
 
-	var version = "0.2";
+	var version = "0.2.0";
 	var logMessage = "";
 	var btg;
 	
@@ -61,7 +61,7 @@
 	var loadElement = function(element) {
 		var self = this;
 
-		var el, sz, url, adObj, data_replace, data_zone, data_testUrl;
+		var el, sz, url, adObj, data_replace, data_zone, data_testUrl, data_addkv;
 
 		var activateRefresh = function() {
 
@@ -102,7 +102,7 @@
 			}).appendTo(element).
 			bind("load", function() {
 			
-				el.trigger("coda.ad.load", {
+				el.trigger("coda:ad:load", {
 					url:ad_src
 				});
 			
@@ -115,21 +115,21 @@
 
 		if (!(btg = window.btg)) {    // grab a local reference to btg
 		
-			el.trigger("coda.ad.load", {"error": "no CODA"} );
+			el.trigger("coda:ad:load", {"error": "no CODA"} );
 		
 			return false;
 		}
 		
 		if (!(el.is(":visible"))) { // don't put ad in an element that is display: none
 
-			el.trigger("coda.ad.load", {"error": "hidden"} );
+			el.trigger("coda:ad:load", {"error": "hidden"} );
 		
 			return false;
 		}
 
 		if (el.children("iframe").length > 0) { // don't put an ad in an element that is already filled
 
-			el.trigger("coda.ad.load", {"error": "occupied"} );
+			el.trigger("coda:ad:load", {"error": "occupied"} );
 
 			return false;
 		}
@@ -143,8 +143,10 @@
 
 		
 		// First: if we are replacing page level, set keyValues to replacekv
-				
-		if (data_replace= extractData(el, ["replacekv", "adKeyvalues"])) {
+
+		data_replace = extractData(el, ["replacekv", "adKeyvalues"]);
+
+		if (data_replace) {
 			// maybe make sure it starts with a !
 			adObj.keyValues = ";" + data_replace;
 		} else {
@@ -152,12 +154,14 @@
 				adObj.keyValues = btg.config.DoubleClick.keyValues;
 			}
 		}
-		
-		if (data_addkv = extractData(el, "addkv")) {
+
+		data_addkv = extractData(el, "addkv");
+		if (data_addkv) {
 			adObj.keyValues += ";" + data_addkv;
 		}
-	
-		if (data_zone = extractData(el, ["zone", "adUnit"])) {
+
+		data_zone = extractData(el, ["zone", "adUnit"]);
+		if (data_zone) {
 			adObj.zoneOverride = data_zone;
 		}
 
@@ -165,7 +169,8 @@
 		sz = adObj.size.split("x");
 		url = btg.Controller.getAdUrl(adObj);
 
-		if (data_testUrl = extractData(el, "testUrl")) {
+		data_testUrl = extractData(el, "testUrl");
+		if (data_testUrl) {
 			url = data_testUrl;
 		}
 
@@ -209,5 +214,5 @@
 		} 
 	};
 	
-})(window["jQuery"] || window["Zepto"], window);
+})(window["jQuery"], window);
 
