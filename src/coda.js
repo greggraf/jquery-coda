@@ -120,7 +120,7 @@
 			return false;
 		}
 		
-		if (el.css("display") == "none") { // don't put ad in an element that is display: none
+		if (el.css("display") === "none") { // don't put ad in an element that is display: none
 
 			el.trigger("coda:ad:load", {"error": "hidden"} );
 		
