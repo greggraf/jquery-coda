@@ -3,9 +3,17 @@
 	var version = "0.2.0";
 	var logMessage = "";
 	var btg;
+
+	if ($) {
+		if ($.fn.coda) {    // do not redefine if the plugin is already there
+			return false;
+		}
+		
+		// check to see if jQuery greater than 1.4.3, return and log error if not
+		if ($().jquery < "1.4.4") {
+			return log("Requires jQuery version 1.4.4 or higher");
+		}
 	
-	if ($.fn.coda) {    // do not redefine if the plugin is already there
-		return false;
 	}
 	
 	var log = function (str) {
@@ -16,16 +24,14 @@
 		}
 	};
 
-	// check to see if jQuery greater than 1.4.3, return and log error if not
-	if ($().jquery < "1.4.4") {
-		return log("Requires jQuery version 1.4.4 or higher");
-	}
-
 	var ordUtil = function(url, inc) {
 		
 		var re = /(\d*)\?$/;
 		var ord = +url.match(re)[1];
-		var new_ord = (ord/10000 + (inc || 1)) * 10000; // JS can't deal with adding one to big numbers
+		
+		inc = +inc || 1;
+
+		var new_ord = (ord/10000 + inc) * 10000; // JS can't deal with adding one to big numbers
 		var new_url = url.replace(ord, new_ord);
 
 		return {
@@ -36,21 +42,21 @@
 	};
 	
 	var extractData = function(el, vals) {
+		var d = "";
 		
 		if (typeof el === "undefined") {
 			return false;
 		}
-		
-		var $el = (el.jquery)?  el : $(el);
-	
+			
 		if (typeof vals === "string") {
 			vals = [vals];
 		}
 		
 		if (Object.prototype.toString.call(vals) === '[object Array]') {
 			for (var i = 0; i < vals.length; i++) {
-				if ($el.data(vals[i])) {
-					return $el.data(vals[i]);
+				d = el.getAttribute("data-" + vals[i])
+				if (d) {
+					return d;
 				}
 			}		 
 		}
@@ -61,12 +67,12 @@
 	var loadElement = function(element) {
 		var self = this;
 
-		var el, sz, url, adObj, data_replace, data_zone, data_testUrl, data_addkv;
+		var sz, url, adObj, data_replace, data_zone, data_testUrl, data_addkv;
 
 		var activateRefresh = function() {
 
 			var rate = extractData(element, "refreshrate");
-			
+
 			if(!rate) {
 				return false;
 
@@ -76,7 +82,10 @@
 
 					url = ordUtil(url, rate).new_url;
 
-					el.empty();
+					while (element.firstChild) {
+						element.removeChild(element.firstChild);
+					}
+
 					buildIframe();
 					activateRefresh();
 					
@@ -85,51 +94,60 @@
 		};
 
 		var buildIframe = function(new_url) {
-			
+			log("building");
+
 			var ad_src = new_url || url;
 			
-			$("<iframe />").attr({
-				"scrolling": "no",
-				"frameborder": "0",
-				"allowtransparency": "true",
-				"leftmargin": "0",
-				"topmargin": "0",
-				"marginwidth": "0",
-				"marginheight": "0",
-				"width": sz[0],
-				"height": sz[1],
-				"src": ad_src
-			}).appendTo(element).
-			bind("load", function() {
+			var loaded = function() {
 			
-				el.trigger("coda:ad:load", {
+				$(element).trigger("coda:ad:load", {
 					url:ad_src
 				});
 			
 			
-			});		
-		};
+			}
+				
+			var tag = document.createElement("iframe");
+			tag.setAttribute("scrolling", "no");
+			tag.setAttribute("frameborder", "0");
+			tag.setAttribute("allowtransparency", "true");
+			tag.setAttribute("leftmargin", "0");
+			tag.setAttribute("topmargin", "0");
+			tag.setAttribute("marginwidth", "0");
+			tag.setAttribute("marginheight", "0");
+			tag.setAttribute("width", sz[0]);
+			tag.setAttribute("height", sz[1]);
+			tag.setAttribute("src", ad_src);
 
-		el = $(element);
+			if (tag.addEventListener) { 
+				tag.addEventListener("load", loaded,false);
+			} else {
+			 if (tag.attachEvent) { // IE DOM
+				 var r = tag.attachEvent("onload", loaded);
+				}   
+			}
+			
+			element.appendChild(tag)
+			
+		};
 
 
 		if (!(btg = window.btg)) {    // grab a local reference to btg
 		
-			el.trigger("coda:ad:load", {"error": "no CODA"} );
+			log("error: no CODA");
 		
 			return false;
 		}
 		
-		if (!(el.is(":visible"))) { // don't put ad in an element that is display: none
+		if ((element.offsetWidth === 0 && element.offsetHeight === 0)) { // don't put ad in an element that is display: none
 
-			el.trigger("coda:ad:load", {"error": "hidden"} );
-		
+			log("error: hidden");		
 			return false;
 		}
 
-		if (el.children("iframe").length > 0) { // don't put an ad in an element that is already filled
+		if (element.getElementsByTagName("iframe").length > 0) { // don't put an ad in an element that is already filled
 
-			el.trigger("coda:ad:load", {"error": "occupied"} );
+			log("error: occupied");
 
 			return false;
 		}
@@ -137,14 +155,14 @@
 		adObj = {
 			"contentType":"adi",
 			"dw": "0", // disable the doc.write in DART mobile
-			"size": extractData(el, ["sz", "adSizes"]),
+			"size": extractData(element, ["sz", "adSizes", "ad-sizes"]),
 			"keyValues": ""
 		};
 
 		
 		// First: if we are replacing page level, set keyValues to replacekv
 
-		data_replace = extractData(el, ["replacekv", "adKeyvalues"]);
+		data_replace = extractData(element, ["replacekv", "adKeyvalues", "ad-keyvalues"]);
 
 		if (data_replace) {
 			// maybe make sure it starts with a !
@@ -155,12 +173,12 @@
 			}
 		}
 
-		data_addkv = extractData(el, "addkv");
+		data_addkv = extractData(element, "addkv");
 		if (data_addkv) {
 			adObj.keyValues += ";" + data_addkv;
 		}
 
-		data_zone = extractData(el, ["zone", "adUnit"]);
+		data_zone = extractData(element, ["zone", "adUnit", "ad-unit"]);
 		if (data_zone) {
 			adObj.zoneOverride = data_zone;
 		}
@@ -169,7 +187,7 @@
 		sz = adObj.size.split("x");
 		url = btg.Controller.getAdUrl(adObj);
 
-		data_testUrl = extractData(el, "testUrl");
+		data_testUrl = extractData(element, "testUrl");
 		if (data_testUrl) {
 			url = data_testUrl;
 		}
@@ -187,7 +205,9 @@
 	};
 
 	
-	$.fn.coda = function(cmd) {
+	var main = function(cmd) {
+	
+		var set = this;
 	
 		if (cmd === "info") {
 		
@@ -205,14 +225,31 @@
 				return false;
 
 			} else {
+				if (cmd && cmd.length) {
+					set = cmd;
+				}
+				
+				var l = set.length;  
+				for (var i=0;i<l; i++) {  
+				 loadElement(set[i]);  
+				}
 
-				return this.each(function() {
-					loadElement(this);
-				});
+				
+				return set;
 
 			}
 		} 
 	};
+	
+	if ($) {
+		$.fn.coda = main;	
+	} else {
+		window.fe = window.fe || {};
+		window.fe = {
+			"coda": main
+		}
+	}
+
 	
 })(window["jQuery"], window);
 

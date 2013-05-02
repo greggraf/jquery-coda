@@ -1,4 +1,33 @@
 var fixtures = $("#qunit-fixtures").html()
+var invoke, one;
+var btg_holder;
+
+if(window["jQuery"]) {
+	invoke = function(sel, cmd) {
+
+		if (cmd) {
+			return $.fn.coda(cmd);
+		} else {
+			return $(sel).coda();
+		}
+	}
+	
+	one = function(sel, ev,  cb) {
+		$(sel).one(ev, cb)
+	}
+	
+} else {
+	invoke = function(sel, cmd) {
+		return window.fe.coda(cmd || document.querySelectorAll(sel))
+	}
+
+	one = function(sel, ev,  cb) {
+		window.fe.one(ev, cb)
+	}
+	
+
+
+}
 
 module("CODA", {
 	teardown: function() {
@@ -13,12 +42,14 @@ module("CODA", {
 test("Basics",function(){
 	expect(2);
 	
+	
 	ok(
-		$.isFunction($.fn.coda), 
+	
+		($.isFunction($.fn.coda) || $.isFunction(window.fe.coda)), 
 		"$.fn.coda exists and is a function"
 	);
 
-	equal( $.fn.coda('info').version, "0.2.0", "$.fn.coda() version is 0.2.0"	);
+	equal( invoke('', 'info').version, "0.2.0", "$.fn.coda() version is 0.2.0"	);
 	
 });
 
@@ -26,19 +57,19 @@ test("Basics",function(){
 
 test("btg dependency",function(){
 
-	var btg_holder = window.btg;
+	btg_holder = window.btg;
 	window.btg = undefined;
 
 	expect(2)
 
 	equal(
-		$("#test1").coda(), 
+		invoke("#test1"), 
 		false,
 		"return false if btg is not on the page"
 	);
 
 	equal(
-		$("#test1").coda('info').logMessage, 
+		invoke("#test1", 'info').logMessage, 
 		"CODA Plugin: This plugin depends on btg, CODA is not on the page.",
 		"Log message if btg is not on the page"
 	);
@@ -60,19 +91,19 @@ test("refresh rate",function(){
 	el.one("coda:ad:load", function(e, data) {	
 
 		val1 = data.url;
-		
+
 		el.one("coda:ad:load", function(e, data) {
 
 
 			val2 = data.url;
+			el.attr("data-refreshrate", "")
 			
 			el.one("coda:ad:load", function(e, data) {
 
-				el.data("refreshrate", false)
 	
 	
 				val3 = data.url;
-	
+
 				start();
 		
 				notEqual(
@@ -87,7 +118,6 @@ test("refresh rate",function(){
 					"on second reload, src changes"
 				);
 				
-				
 			});
 
 			
@@ -95,7 +125,7 @@ test("refresh rate",function(){
 	
 	});
 	
-	el.coda();
+	invoke("#test_refreshrate");
 	
 	
 });
@@ -108,7 +138,7 @@ test("refresh 2 ads at the same interval",function(){
 
 	var els = $(".refresh2");
 	var vals = [];
-	var ordUtil = $("body").coda("info").ordUtil;
+	var ordUtil = invoke("body", "info").ordUtil;
 
 	
 	els.one("coda:ad:load", function(e, data) {	
@@ -117,7 +147,7 @@ test("refresh 2 ads at the same interval",function(){
 		
 		$(e.target).one("coda:ad:load", function(e, data) {
 
-			$(e.target).data("refreshrate", false)
+			$(e.target).attr("data-refreshrate", "")
 
 			vals.push(ordUtil(data.url).ord);
 	
@@ -147,7 +177,7 @@ test("refresh 2 ads at the same interval",function(){
 	
 	});
 	
-	els.coda();
+	invoke(els);
 	
 	
 });
@@ -163,7 +193,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 		"set1": [],
 		"set2": []
 	};
-	var ordUtil = $("body").coda("info").ordUtil;
+	var ordUtil = invoke("body", "info").ordUtil;
 
 	
 	els.one("coda:ad:load", function(e, data) {	
@@ -182,7 +212,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 		
 		$el.one("coda:ad:load", function(e, data) {
 
-			$el.data("refreshrate", false)
+			$el.attr("data-refreshrate", "")
 
 			vals[set].push(ordUtil(data.url).ord);
 	
@@ -242,7 +272,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 	
 	});
 	
-	els.coda();
+	invoke(els);
 	
 	
 });
@@ -251,7 +281,7 @@ test("ord utilities",function(){
 	
 	expect(4);
 	
-	var ordUtil = $("#test_refreshrate").coda("info").ordUtil;
+	var ordUtil = invoke("#test_refreshrate", "info").ordUtil;
 	var sampleUrl = "http://ad.doubleclick.net/adi/nick.nol/unk_i_s/mtvn/dev/jquery-coda/docs/_0_1/test/qunit;sec0=mtvn;sec1=dev;sec2=jquery-coda;sec3=docs;sec4=_0_1;sec5=test;sec6=qunit;u=a0171b8b-0e9b-eef2-3dbc-edea52ae7dfe;pos=unk;tag=adi;mtype=standard;sz=300x250;tile=1;ord=590898784273304000?"
 
 	var resultObj = {
@@ -306,7 +336,7 @@ test("zone override",function(){
 	el2.one("coda:ad:load", function(e, data) {	
 
 		default_val = getZone(data.url);
-		el.coda();
+		invoke(el);
 
 	});
 	
@@ -330,7 +360,7 @@ test("zone override",function(){
 	
 	});
 	
-	el2.coda();
+	invoke(el2);
 	
 });
 
@@ -338,18 +368,13 @@ module("placeholder hidden")
 
 test("no ad if placeholder element is display: none",function(){
 	
-	stop();
 	expect(2);
 	
 	var el = $("#test_display_none");
-	el.one("coda:ad:load", function(e, data) {	
-		start()
-		equal("hidden", data.error, "The event has fired with 'hidden' error");
-		equal("", el.html(), "The placeholder is empty");
-		
-	});
+	invoke(el); 
 
-	el.coda(); 
+	equal(invoke('','info').logMessage, "CODA Plugin: error: hidden", "logged message 'hidden' error");
+	equal("", el.html(), "The placeholder is empty");
 
 });
 
@@ -357,23 +382,33 @@ test("no ad if placeholder element is display: none",function(){
 
 test("no ad if enclosing parent element is dispay: none",function(){
 	
-	stop();
 	expect(2);
 	
 	var el = $("#test_parent_display_none");
-	el.one("coda:ad:load", function(e, data) {	
-		start()
-		equal("hidden", data.error, "The event has fired with 'hidden' error");
-		equal("", el.html(), "The placeholder is empty");
-		
-	});
+	invoke("#test_parent_display_none"); 
 
-	el.coda(); 
+	equal(invoke('', 'info').logMessage, "CODA Plugin: error: hidden", "logged message 'hidden' error");
+	equal("", el.html(), "The placeholder is empty");
+
 
 
 	
 });
 
+test("ad if enclosing parent element is dispay:  inline-block",function(){
+	
+	expect(2);
+	
+	var el = $("#test_parent_inline_block");
+	invoke("#test_parent_inline_block"); 
+
+	equal(invoke('', 'info').logMessage, "CODA Plugin: building", "logged message 'building'");
+	notequal("", el.html(), "The placeholder is empty");
+
+
+
+	
+})
 
 
 module("data attributes", {
@@ -425,7 +460,7 @@ var testfn = function(slug, self) {
 
 	});
 
-	el.coda();
+	invoke(el);
 }
 
 
@@ -480,7 +515,7 @@ test("DFP data attributes make it into the ad call",function(){
 	});
 
 	
-	el.coda();
+	invoke(el);
 	
 	
 });

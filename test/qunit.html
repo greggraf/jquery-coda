@@ -55,6 +55,9 @@
 		<div style="display: none">
 			<div id="test_parent_display_none" data-sz="300x250" ></div>
 		</div>
+		<div style="display: inline-block">
+			<div id="test_parent_inline_block" data-sz="300x250" ></div>
+		</div>
 
 	<!-- DFP data attributes -->
 		<div id="test_dfp" 
@@ -79,6 +82,7 @@
 	<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
 
 	<script>
+		window["jQueryx"] = undefined;
 		var v = window.location.search.substr(1).split("&")[0].split("testing=")[1];
 		if (v == 'min') {
 			document.write('<script src="../dist/coda.min.js"><' + '/script>')
