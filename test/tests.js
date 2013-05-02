@@ -354,7 +354,7 @@ test("no ad if placeholder element is display: none",function(){
 });
 
 
-
+/*
 test("no ad if enclosing parent element is dispay: none",function(){
 	
 	stop();
@@ -373,7 +373,7 @@ test("no ad if enclosing parent element is dispay: none",function(){
 
 	
 });
-
+*/
 
 
 module("data attributes", {
