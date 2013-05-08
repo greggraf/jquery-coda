@@ -22,11 +22,23 @@ if(window["jQuery"]) {
 	}
 
 	one = function(sel, ev,  cb) {
-		window.fe.one(ev, cb)
+		var listener = function(e) {
+
+				this.removeEventListener(ev, listener, false);
+				cb(e, e.data);
+			}
+			
+		var els =  (typeof sel == "string")? document.querySelectorAll(sel): sel;
+		if (els.length) {
+			for (var i = 0; i < els.length; i++) {
+
+				els[i].addEventListener(ev,listener )
+			}
+		} else {
+				els.addEventListener(ev,listener )
+		}
 	}
 	
-
-
 }
 
 module("CODA", {
@@ -88,17 +100,17 @@ test("refresh rate",function(){
 	var val1, val2, val3;
 	
 	
-	el.one("coda:ad:load", function(e, data) {	
+	one("#test_refreshrate","coda:ad:load", function(e, data) {	
 
 		val1 = data.url;
 
-		el.one("coda:ad:load", function(e, data) {
+		one("#test_refreshrate", "coda:ad:load", function(e, data) {
 
 
 			val2 = data.url;
 			el.attr("data-refreshrate", "")
 			
-			el.one("coda:ad:load", function(e, data) {
+			one("#test_refreshrate", "coda:ad:load", function(e, data) {
 
 	
 	
@@ -141,11 +153,11 @@ test("refresh 2 ads at the same interval",function(){
 	var ordUtil = invoke("body", "info").ordUtil;
 
 	
-	els.one("coda:ad:load", function(e, data) {	
+	one(".refresh2", "coda:ad:load", function(e, data) {	
 
 		vals.push(ordUtil(data.url).ord);
-		
-		$(e.target).one("coda:ad:load", function(e, data) {
+
+		one(e.target, "coda:ad:load", function(e, data) {
 
 			$(e.target).attr("data-refreshrate", "")
 
@@ -177,7 +189,7 @@ test("refresh 2 ads at the same interval",function(){
 	
 	});
 	
-	invoke(els);
+	invoke(".refresh2");
 	
 	
 });
@@ -196,7 +208,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 	var ordUtil = invoke("body", "info").ordUtil;
 
 	
-	els.one("coda:ad:load", function(e, data) {	
+	one(".refresh2, .refresh3", "coda:ad:load", function(e, data) {	
 		var $el = $(e.target);
 		var set = ""
 		
@@ -210,7 +222,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 		
 		vals[set].push(ordUtil(data.url).ord);
 		
-		$el.one("coda:ad:load", function(e, data) {
+		one(e.target, "coda:ad:load", function(e, data) {
 
 			$el.attr("data-refreshrate", "")
 
@@ -272,7 +284,7 @@ test("refresh 2 sets of ads at different intervals",function(){
 	
 	});
 	
-	invoke(els);
+	invoke(".refresh2, .refresh3");
 	
 	
 });
@@ -333,14 +345,14 @@ test("zone override",function(){
 	var data_att_val = "nickmom/more_lols/_mn";
 	var default_val, override_val;
 	
-	el2.one("coda:ad:load", function(e, data) {	
+	one("#test1", "coda:ad:load", function(e, data) {	
 
 		default_val = getZone(data.url);
-		invoke(el);
+		invoke("#test_zone");
 
 	});
 	
-	el.one("coda:ad:load", function(e, data) {	
+	one("#test_zone", "coda:ad:load", function(e, data) {	
 
 		override_val = getZone(data.url);
 		start();
@@ -360,7 +372,7 @@ test("zone override",function(){
 	
 	});
 	
-	invoke(el2);
+	invoke("#test1");
 	
 });
 
@@ -369,46 +381,16 @@ module("placeholder hidden")
 test("no ad if placeholder element is display: none",function(){
 	
 	expect(2);
-	
+	invoke('','info').debug(true);
 	var el = $("#test_display_none");
-	invoke(el); 
+	invoke("#test_display_none"); 
 
 	equal(invoke('','info').logMessage, "CODA Plugin: error: hidden", "logged message 'hidden' error");
 	equal("", el.html(), "The placeholder is empty");
+	invoke('','info').debug(false);
 
 });
 
-
-
-test("no ad if enclosing parent element is dispay: none",function(){
-	
-	expect(2);
-	
-	var el = $("#test_parent_display_none");
-	invoke("#test_parent_display_none"); 
-
-	equal(invoke('', 'info').logMessage, "CODA Plugin: error: hidden", "logged message 'hidden' error");
-	equal("", el.html(), "The placeholder is empty");
-
-
-
-	
-});
-
-test("ad if enclosing parent element is dispay:  inline-block",function(){
-	
-	expect(2);
-	
-	var el = $("#test_parent_inline_block");
-	invoke("#test_parent_inline_block"); 
-
-	equal(invoke('', 'info').logMessage, "CODA Plugin: building", "logged message 'building'");
-	notequal("", el.html(), "The placeholder is empty");
-
-
-
-	
-})
 
 
 module("data attributes", {
@@ -443,7 +425,7 @@ var testfn = function(slug, self) {
 	var el = $("#test_" + slug);
 	var attrs = self.attrs
 	
-	el.one("coda:ad:load", function(e, data) {	
+	one("#test_" + slug, "coda:ad:load", function(e, data) {	
 		start();		
 
 		for (var i = 0; i < slugs.length; i++) {
@@ -460,7 +442,7 @@ var testfn = function(slug, self) {
 
 	});
 
-	invoke(el);
+	invoke("#test_" + slug);
 }
 
 
@@ -505,7 +487,7 @@ test("DFP data attributes make it into the ad call",function(){
 	var el = $("#test_dfp");
 
 	
-	el.one("coda:ad:load", function(e, data) {	
+	one("#test_dfp", "coda:ad:load", function(e, data) {	
 		start();		
 
 		ok(data.url.indexOf(adSizes) > 1, "values from the data-ad-sizes data attribute is in the dart call");
@@ -515,7 +497,7 @@ test("DFP data attributes make it into the ad call",function(){
 	});
 
 	
-	invoke(el);
+	invoke("#test_dfp");
 	
 	
 });

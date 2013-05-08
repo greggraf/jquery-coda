@@ -3,6 +3,8 @@
 	var version = "0.2.0";
 	var logMessage = "";
 	var btg;
+	var isDebug = false;
+	var triggerfn;
 
 	if ($) {
 		if ($.fn.coda) {    // do not redefine if the plugin is already there
@@ -16,11 +18,22 @@
 	
 	}
 	
+	var setDebug = function(v) {
+		if (typeof v == "undefined") {
+			return isDebug;
+		} else {
+			isDebug = v;
+		}
+	}
+	
+	
 	var log = function (str) {
 		logMessage =  "CODA Plugin: " + str;
-
-		if ( typeof console !== 'undefined' ) {
-			console.log( str );
+		
+		if (isDebug) {
+			if ( typeof console !== 'undefined' ) {
+				console.log( str );
+			}
 		}
 	};
 
@@ -64,10 +77,26 @@
 		return false;
 	};
 
+
+	function fireEvent(event, data){
+
+		if (document.createEventObject){
+			// dispatch for IE
+			var evt = document.createEventObject();
+			return this.fireEvent('on'+event,evt, data)
+		} else {
+			// dispatch for firefox + others
+			var evt = document.createEvent("HTMLEvents");
+			evt.data = data;
+			evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+			return !this.dispatchEvent(evt);
+		}
+	}
+
 	var loadElement = function(element) {
 		var self = this;
 
-		var sz, url, adObj, data_replace, data_zone, data_testUrl, data_addkv;
+		var sz, url, adObj, display_value, data_replace, data_zone, data_testUrl, data_addkv;
 
 		var activateRefresh = function() {
 
@@ -94,18 +123,18 @@
 		};
 
 		var buildIframe = function(new_url) {
+		
 			log("building");
 
 			var ad_src = new_url || url;
 			
 			var loaded = function() {
-			
-				$(element).trigger("coda:ad:load", {
+
+				triggerfn(element, "coda:ad:load", {
 					url:ad_src
 				});
-			
-			
-			}
+
+			}				
 				
 			var tag = document.createElement("iframe");
 			tag.setAttribute("scrolling", "no");
@@ -138,12 +167,38 @@
 		
 			return false;
 		}
+
+
+		display_value = function(el, cssProperty) {
 		
-		if ((element.offsetWidth === 0 && element.offsetHeight === 0)) { // don't put ad in an element that is display: none
+			if (!window.getComputedStyle){
+				if (document.defaultView && document.defaultView.getComputedStyle){
+					return document.defaultView.getComputedStyle.getPropertyValue(cssProperty);
+				} else {
+					if  (el.currentStyle){
+						return el.currentStyle(cssProperty);
+					} else {
+						return el.style[cssProperty];
+					}
+				}
+			} else {
+				return window.getComputedStyle(el).getPropertyValue(cssProperty);
+			}
+			
+		}(element, "display");
+		
+		if (display_value === "none") { // don't put ad in an element that is display: none
 
 			log("error: hidden");		
 			return false;
 		}
+
+
+
+
+
+
+
 
 		if (element.getElementsByTagName("iframe").length > 0) { // don't put an ad in an element that is already filled
 
@@ -214,7 +269,8 @@
 			return {
 				ordUtil: ordUtil,
 				version: version,
-				logMessage: logMessage
+				logMessage: logMessage,
+				debug: setDebug
 			};
 			
 		} else {
@@ -243,10 +299,16 @@
 	
 	if ($) {
 		$.fn.coda = main;	
+		triggerfn = function (el, ev, d) {
+			$(el).trigger(ev,d);		
+		}
 	} else {
 		window.fe = window.fe || {};
 		window.fe = {
 			"coda": main
+		}
+		triggerfn = function (el, ev, d) {		
+			fireEvent.call(el, ev, d);	
 		}
 	}
 

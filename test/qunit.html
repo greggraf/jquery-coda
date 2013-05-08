@@ -82,8 +82,13 @@
 	<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-git.js"></script>
 
 	<script>
-		window["jQueryx"] = undefined;
+		
 		var v = window.location.search.substr(1).split("&")[0].split("testing=")[1];
+		
+		if (v == 'none') {
+			window["jQuery"] = undefined;
+		}
+		
 		if (v == 'min') {
 			document.write('<script src="../dist/coda.min.js"><' + '/script>')
 		} else {
