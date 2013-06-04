@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+	
+  <head>
+    <meta charset="utf-8">
+    <title>Page</title>
+
+	<style>
+			
+	
+		iframe {
+			border: 3px red solid;
+		}
+
+
+
+
+	</style>
+
+
+  </head>
+	
+  <body>
+		<h1>Testing Expandable Ad in Iframe</h1>
+		<p>friendly iframe direct to eyeblaster</p>
+		<div class="mtvn-ad" style="width:728px;">
+		<iframe id="ad1" src="about:blank" width="728" height="90" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+		</div>
+
+
+
+	<script>
+	
+		var hardcodedAdCall = '<table width="1" border="0" cellspacing="0" cellpadding="0"><TR><td align="CENTER"><table border="0" cellspacing="0" cellpadding="0" align="CENTER"><TR><td align="CENTER"><script src="http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=rsb&c=28&pli=5494846&PluID=24&w=970&h=66&ord=4667856&ifrm=1&ifl=$$asm/eyeblaster/addineyeV2.html$$&ncu=$$http://ad.doubleclick.net/click%3Bh%3Dv8/3d72/3/0/%2a/b%3B248283285%3B0-0%3B11%3B93522638%3B3454-728/90%3B51969670/51930598/2%3Bu%3Dcae58963-f163-e02c-9c85-4d40ef24d108%3B%7Eaopt%3D2/1/a7/0%3B%7Esscs%3D%3f$$&z=99999"><' + '/script><noscript><a href="http://ad.doubleclick.net/click%3Bh%3Dv8/3d72/3/0/%2a/b%3B248283285%3B0-0%3B11%3B93522638%3B3454-728/90%3B51969670/51930598/2%3Bu%3Dcae58963-f163-e02c-9c85-4d40ef24d108%3B%7Eaopt%3D2/1/a7/0%3B%7Esscs%3D%3fhttp%3A//bs.serving-sys.com/BurstingPipe/adServer.bs%3Fcn%3Dbrd%26FlightID%3D5494846%26Page%3D%26PluID%3D24%26Pos%3D7836" target="_blank"><img src="http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=bsr&FlightID=5494846&Page=&PluID=24&Pos=7836" border=0 width=970 height=66></a></noscript></TD></TR></TABLE></TD></TR></TABLE>';
+	
+		function loadIframe(iframe_id,ad_url, contentOverride){
+			//get reference to iframe document
+			var iframe = document.getElementById(iframe_id);
+			var iframeDocument = iframe.contentWindow || iframe.contentDocument;
+			if(iframeDocument.document)
+					iframeDocument = iframeDocument.document;
+
+			//create page with script element in iframe document
+			var script = contentOverride || '<scr' + 'ipt src="' + ad_url + '"><' + '/script>';
+			iframeDocument.open();
+			iframeDocument.write('<!DOCTYPE html><html><head></head><body style="margin:0;padding:0;">' + script + '</body></html>');
+			if(!/MSIE/i.test(navigator.userAgent)){
+					iframeDocument.close();
+			}
+	}
+	
+	loadIframe("ad1", "", hardcodedAdCall)
+	</script>
+<div>
+
+</div>
+  </body>
+</html>
